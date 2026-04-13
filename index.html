@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bioinformatics — Course Index</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+
+:root {
+  --bg:       #070b14;
+  --surface:  #0d1424;
+  --surface2: #111d33;
+  --border:   #192540;
+  --accent:   #00d4ff;
+  --accent2:  #7c3aed;
+  --green:    #10b981;
+  --amber:    #f59e0b;
+  --text:     #dde6f5;
+  --muted:    #4a6080;
+  --mono:     'JetBrains Mono', monospace;
+  --sans:     'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── BACKGROUND GRID ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── GLOW ORBS ── */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+}
+.orb-1 {
+  width: 500px; height: 500px;
+  background: var(--accent2);
+  top: -180px; left: -100px;
+  animation: driftA 18s ease-in-out infinite alternate;
+}
+.orb-2 {
+  width: 400px; height: 400px;
+  background: var(--accent);
+  bottom: -120px; right: -80px;
+  animation: driftB 14s ease-in-out infinite alternate;
+}
+@keyframes driftA { to { transform: translate(60px, 80px); } }
+@keyframes driftB { to { transform: translate(-50px, -60px); } }
+
+/* ── LAYOUT ── */
+.wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 28px 100px;
+}
+
+/* ── HEADER ── */
+header {
+  padding: 52px 0 0;
+  margin-bottom: 64px;
+}
+
+.uni-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.1s forwards;
+}
+.uni-tag::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--muted);
+}
+
+h1 {
+  font-family: var(--mono);
+  font-size: clamp(36px, 6vw, 58px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: #fff;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.2s forwards;
+}
+
+h1 .accent {
+  color: var(--accent);
+  position: relative;
+}
+h1 .accent::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.header-sub {
+  margin-top: 18px;
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--muted);
+  max-width: 520px;
+  line-height: 1.7;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.35s forwards;
+}
+
+.header-meta {
+  margin-top: 28px;
+  display: flex;
+  gap: 28px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.45s forwards;
+}
+.meta-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+.meta-pill .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+.meta-pill .dot.green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.meta-pill .dot.amber { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 0.4s ease 0.5s forwards;
+}
+
+/* ── SECTION LABEL ── */
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.4s ease 0.55s forwards;
+}
+
+/* ── CARDS GRID ── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+/* ── CARD ── */
+.card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.card:nth-child(1) { animation: fadeUp 0.5s ease 0.6s forwards; }
+.card:nth-child(2) { animation: fadeUp 0.5s ease 0.7s forwards; }
+.card:nth-child(3) { animation: fadeUp 0.5s ease 0.8s forwards; }
+.card:nth-child(4) { animation: fadeUp 0.5s ease 0.9s forwards; }
+.card:nth-child(5) { animation: fadeUp 0.5s ease 1.0s forwards; }
+
+/* top accent line */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--card-color, var(--border)), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.card:hover {
+  border-color: var(--card-color, var(--accent));
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px var(--card-color, var(--accent)) inset;
+}
+.card:hover::before { opacity: 1; }
+
+/* card inner glow on hover */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top left, var(--card-color, transparent) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
+}
+.card:hover::after { opacity: 0.07; }
+
+.card-session {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-num {
+  font-family: var(--mono);
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--surface2);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 14px;
+  transition: color 0.25s;
+  -webkit-text-stroke: 1px var(--border);
+}
+.card:hover .card-num {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--card-color, var(--accent));
+}
+
+.card-title {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 10px;
+  flex: 1;
+}
+
+.card-desc {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.status-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.badge-live {
+  background: rgba(16,185,129,0.12);
+  color: var(--green);
+  border: 1px solid rgba(16,185,129,0.25);
+}
+.badge-soon {
+  background: rgba(74,96,128,0.15);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+.card-arrow {
+  font-size: 16px;
+  color: var(--muted);
+  transition: color 0.25s, transform 0.25s;
+}
+.card:hover .card-arrow {
+  color: var(--card-color, var(--accent));
+  transform: translate(3px, -3px);
+}
+
+/* disabled / coming soon cards */
+.card.locked {
+  cursor: default;
+  pointer-events: none;
+}
+.card.locked:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--border);
+}
+.card.locked::before { display: none; }
+.card.locked::after  { display: none; }
+
+/* ── FOOTER ── */
+footer {
+  margin-top: 80px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 0;
+  animation: fadeUp 0.4s ease 1.2s forwards;
+}
+.footer-left {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+.footer-right {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer-right .pulse {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:0.5; transform:scale(0.85); }
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width:600px) {
+  .wrapper { padding: 0 16px 80px; }
+  header { padding: 36px 0 0; margin-bottom:44px; }
+  .cards { grid-template-columns: 1fr; }
+  .header-meta { flex-wrap: wrap; gap: 16px; }
+  footer { flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div class="uni-tag">Al Hussein Technical University · 4th Year AI</div>
+    <h1>Bio<span class="accent">informatics</span></h1>
+    <p class="header-sub">Computational approaches to biological data — from gene expression to clinical prediction models.</p>
+    <div class="header-meta">
+      <div class="meta-pill"><span class="dot green"></span>1 session live</div>
+      <div class="meta-pill"><span class="dot amber"></span>4 coming soon</div>
+      <div class="meta-pill"><span class="dot"></span>Interactive lessons</div>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+  <div class="section-label">// Course Sessions</div>
+
+  <!-- CARDS -->
+  <div class="cards">
+
+    <!-- SESSION 01 -->
+    <div class="card locked" style="--card-color:#7c3aed;">
+      <div class="card-session">
+        <span>Session</span>
+        <span>01</span>
+      </div>
+      <div class="card-num">01</div>
+      <div class="card-title">Introduction to Bioinformatics</div>
+      <div class="card-desc">Scope of the field, biological data types, and the computational biology pipeline.</div>
+      <div class="card-footer">
+        <span class="status-badge badge-soon">Coming Soon</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </div>
+
+    <!-- SESSION 02 -->
+    <div class="card locked" style="--card-color:#00d4ff;">
+      <div class="card-session">
+        <span>Session</span>
+        <span>02</span>
+      </div>
+      <div class="card-num">02</div>
+      <div class="card-title">Session 02</div>
+      <div class="card-desc">Interactive lesson with visualisations and MCQ assessment.</div>
+      <div class="card-footer">
+        <span class="status-badge badge-soon">Coming Soon</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </div>
+
+    <!-- SESSION 03 -->
+    <div class="card locked" style="--card-color:#f59e0b;">
+      <div class="card-session">
+        <span>Session</span>
+        <span>03</span>
+      </div>
+      <div class="card-num">03</div>
+      <div class="card-title">Session 03</div>
+      <div class="card-desc">Interactive lesson with visualisations and MCQ assessment.</div>
+      <div class="card-footer">
+        <span class="status-badge badge-soon">Coming Soon</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </div>
+
+    <!-- SESSION 04 -->
+    <div class="card locked" style="--card-color:#10b981;">
+      <div class="card-session">
+        <span>Session</span>
+        <span>04</span>
+      </div>
+      <div class="card-num">04</div>
+      <div class="card-title">Session 04</div>
+      <div class="card-desc">Interactive lesson with visualisations and MCQ assessment.</div>
+      <div class="card-footer">
+        <span class="status-badge badge-soon">Coming Soon</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </div>
+
+    <!-- SESSION 07 — LIVE -->
+    <a class="card" href="logistic_regression.html" style="--card-color:#00d4ff;">
+      <div class="card-session">
+        <span>Session</span>
+        <span>07</span>
+      </div>
+      <div class="card-num">07</div>
+      <div class="card-title">Logistic Regression</div>
+      <div class="card-desc">Decision boundaries, sigmoid function, odds ratios, MLE, and regularisation — with interactive visualisations.</div>
+      <div class="card-footer">
+        <span class="status-badge badge-live">● Live</span>
+        <span class="card-arrow">↗</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">BIOINFORMATICS · HTU · 2025–2026</div>
+    <div class="footer-right">
+      <span class="pulse"></span>
+      <span>1 interactive session available</span>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
